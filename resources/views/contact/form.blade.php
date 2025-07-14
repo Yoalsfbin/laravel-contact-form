@@ -1,11 +1,12 @@
-<x-app-layout>
-    <div class="container py-5">
-        <h1 class="mb-4">お問い合わせ</h1>
+@vite('resources/js/contact.js')
 
-        {{-- バリデーションエラー --}}
+<x-app-layout>
+    <div class="max-w-2xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+        <h1 class="text-2xl font-bold mb-6">お問い合わせ</h1>
+
         @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
+            <div class="bg-red-100 text-red-700 border border-red-400 p-4 rounded mb-6">
+                <ul class="list-disc pl-5 text-sm">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -13,42 +14,47 @@
             </div>
         @endif
 
-        {{-- フォーム --}}
-        <form action="{{ route('contact.submit') }}" method="POST">
+        <form action="{{ route('contact.submit') }}" method="POST" class="space-y-6">
             @csrf
 
-            <div class="form-floating mb-3">
-                <input type="text" id="name" name="name"
-                       class="form-control @error('name') is-invalid @enderror"
-                       value="{{ old('name') }}" placeholder="お名前">
-                <label for="name" class="form-label">お名前</label>
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">お名前</label>
+                <input type="text" id="name" name="name" required maxlength="50"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                       value="{{ old('name') }}">
                 @error('name')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="form-floating mb-3">
-                <input type="email" id="email" name="email"
-                       class="form-control @error('email') is-invalid @enderror"
-                       value="{{ old('email') }}" placeholder="name@example.com" >
-                <label for="email" class="form-label">メールアドレス</label>
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">メールアドレス</label>
+                <input type="email" id="email" name="email" required maxlength="255"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                       value="{{ old('email') }}">
                 @error('email')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div class="form-floating mb-3">
-                <textarea id="message" name="message" rows="5"
-                          class="form-control @error('message') is-invalid @enderror" 
-                          style="height: 200px; resize: none;"
-                          placeholder="お問い合わせ内容">{{ old('message') }}</textarea>
-                <label for="message" class="form-label">お問い合わせ内容</label>
+            <div>
+                <label for="message" class="block text-sm font-medium text-gray-700">お問い合わせ内容</label>
+                <textarea id="message" name="message" rows="5" required maxlength="500"
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 resize-none">
+                          {{ old('message') }}
+                </textarea>
+                <p id="char-count" class="text-sm text-gray-600 mt-1">最大500文字まで入力できます</p>
                 @error('message')
-                    <div class="invalid-feedback">{{ $message }}</div>
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary">送信する</button>
+            <div>
+                <button type="submit"
+                        class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-white hover:bg-indigo-700">
+                    送信する
+                </button>
+            </div>
         </form>
     </div>
 </x-app-layout>
