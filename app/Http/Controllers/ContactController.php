@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
+use App\Mail\ContactReceivedMail;
 use App\Models\Contact;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -24,6 +26,10 @@ class ContactController extends Controller
             Contact::create($validated);
 
             DB::commit();
+
+            // 自動返信メール送信
+            Mail::to($validated['email'])->send(new ContactReceivedMail($validated));
+            
             return redirect()->route('contact.thanks');
 
         } catch (\Exception $e) {
