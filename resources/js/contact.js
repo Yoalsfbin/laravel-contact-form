@@ -24,4 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
         textarea.addEventListener("input", updateCounter);
         updateCounter(); // 初期表示
     }
+
+    const form = document.querySelector("form");
+    const submitButton = form?.querySelector('button[type="submit"]');
+
+    if (form && submitButton) {
+        form.addEventListener("submit", () => {
+            submitButton.disabled = true;
+            submitButton.innerText = "送信中...";
+        });
+    }
 });
