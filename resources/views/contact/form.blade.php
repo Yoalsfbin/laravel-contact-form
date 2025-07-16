@@ -38,6 +38,16 @@
             </div>
 
             <div>
+                <label for="subject" class="block text-sm font-medium text-gray-700">件名</label>
+                <input type="text" id="subject" name="subject" required maxlength="50"
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                       value="{{ old('subject') }}">
+                @error('subject')
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
                 <label for="message" class="block text-sm font-medium text-gray-700">お問い合わせ内容</label>
                 <textarea id="message" name="message" rows="5" required maxlength="500"
                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 resize-none">{{ old('message') }}</textarea>

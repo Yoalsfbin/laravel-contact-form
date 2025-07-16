@@ -7,6 +7,7 @@
 <ul>
     <li><strong>お名前：</strong> {{ $contactData['name'] }}</li>
     <li><strong>メール：</strong> {{ $contactData['email'] }}</li>
+    <li><strong>件名：</strong> {{ $contactData['subject'] }}</li>
     <li><strong>お問い合わせ内容：</strong><br>{{ $contactData['message'] }}</li>
 </ul>
 
