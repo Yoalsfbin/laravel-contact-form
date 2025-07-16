@@ -25,8 +25,7 @@ class ContactReceivedMail extends Mailable
 
     public function build()
     {
-        return $this->subject('【自動返信】お問い合わせありがとうございます')
-                    ->view('emails.contact_received');
+        return $this->subject('【自動返信】お問い合わせありがとうございます')->view('emails.contact_received');
     }
 
     /**
@@ -45,7 +44,7 @@ class ContactReceivedMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.contact_received',
         );
     }
 
