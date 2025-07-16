@@ -20,15 +20,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// お問い合わせ
 Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 Route::get('/contact/thanks', [ContactController::class, 'thanks'])->name('contact.thanks');
 
-Route::middleware(['auth', AdminMiddleware::class])
-    ->prefix('admin')
-    ->group(function () {
-        Route::get('/contacts', [AdminContactController::class, 'index'])
-            ->name('admin.contacts.index');
-    });
+// 管理者用お問い合わせ確認
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/contacts', [AdminContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/{id}/reply', [AdminContactController::class, 'replyForm'])->name('contacts.reply');
+    Route::post('/contacts/{id}/reply', [AdminContactController::class, 'sendReply'])->name('contacts.sendReply');
+});
 
 require __DIR__.'/auth.php';
