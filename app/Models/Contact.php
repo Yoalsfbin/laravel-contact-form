@@ -9,6 +9,7 @@ class Contact extends Model
     protected $fillable = [
         'name',
         'email',
+        'subject',
         'message',
     ];
 }
