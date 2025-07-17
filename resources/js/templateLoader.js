@@ -15,7 +15,6 @@ function loadTemplate(templateName) {
         })
         .then((html) => {
             const text = html.replace(/<[^>]*>?/gm, ""); // HTMLタグを除去
-            console.log(text);
             const textarea = document.getElementById("reply_message");
             if (textarea) textarea.value = text;
         })
