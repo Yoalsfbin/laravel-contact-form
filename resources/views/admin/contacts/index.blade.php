@@ -48,9 +48,7 @@
                                     お問い合わせ内容（{{ $contact->name }}）
                                 </h2>
 
-                                <div class="text-gray-700 whitespace-pre-wrap break-words leading-relaxed">
-                                    {{ $contact->message }}
-                                </div>
+                                <div class="text-gray-700 whitespace-pre-wrap break-words leading-relaxed">{{ $contact->message }}</div>
 
                                 <button onclick="closeModal({{ $contact->id }})"
                                         class="absolute top-4 right-5 text-gray-500 hover:text-black text-2xl leading-none focus:outline-none">
