@@ -14,13 +14,27 @@ class ContactController extends Controller
     /**
      * お問い合わせ一覧画面表示
      *
+     * @param Request $request
      * @return View
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $contacts = Contact::latest()->paginate(10);
-        return view('admin.contacts.index', compact('contacts'));
+        $keyword = $request->input('keyword');
+
+        $contacts = Contact::query()
+            ->when($keyword, function ($query, $keyword) {
+                $query->where('name', 'like', "%{$keyword}%")
+                    ->orWhere('email', 'like', "%{$keyword}%")
+                    ->orWhere('subject', 'like', "%{$keyword}%")
+                    ->orWhere('message', 'like', "%{$keyword}%");
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.contacts.index', compact('contacts', 'keyword'));
     }
+
 
     /**
      * お問い合わせ返信画面表示

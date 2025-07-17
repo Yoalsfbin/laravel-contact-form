@@ -3,6 +3,13 @@
     <div class="max-w-7xl mx-auto p-6 sm:p-8">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">お問い合わせ一覧</h1>
 
+        {{-- 検索ボックス --}}
+        <form method="GET" action="{{ route('admin.contacts.index') }}" class="mb-4">
+            <input type="text" name="keyword" value="{{ $keyword ?? '' }}" placeholder="キーワードで検索"
+                class="border px-3 py-1 rounded" />
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-1 rounded ml-2">検索</button>
+        </form>
+
         <div class="overflow-x-auto bg-white rounded-lg shadow">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-100 text-left text-sm font-semibold text-gray-700">
