@@ -6,22 +6,42 @@ use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class ContactController extends Controller
 {
-    public function index()
+    /**
+     * お問い合わせ一覧画面表示
+     *
+     * @return View
+     */
+    public function index(): View
     {
         $contacts = Contact::latest()->paginate(10);
         return view('admin.contacts.index', compact('contacts'));
     }
 
-    public function replyForm($id)
+    /**
+     * お問い合わせ返信画面表示
+     *
+     * @param int $id
+     * @return View
+     */
+    public function replyForm(int $id): View
     {
         $contact = Contact::findOrFail($id);
         return view('admin.contacts.reply', compact('contact'));
     }
 
-    public function sendReply(Request $request, $id)
+    /**
+     * お問い合わせ返信処理
+     *
+     * @param Request $request
+     * @param int $id
+     * @return RedirectResponse
+     */
+    public function sendReply(Request $request, int $id): RedirectResponse
     {
         $contact = Contact::findOrFail($id);
 

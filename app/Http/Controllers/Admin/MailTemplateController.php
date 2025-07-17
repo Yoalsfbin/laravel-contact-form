@@ -9,6 +9,13 @@ use App\Models\Contact;
 
 class MailTemplateController extends Controller
 {
+    /**
+     * メールテンプレート取得
+     *
+     * @param string $template
+     * @param Contact $contact
+     * @return Response
+     */
     public function show(string $template , Contact $contact): Response
     {
         if (!preg_match('/^[a-zA-Z0-9_-]+$/', $template)) {

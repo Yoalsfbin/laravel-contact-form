@@ -8,15 +8,28 @@ use App\Models\Contact;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ContactController extends Controller
 {
-    public function show()
+    /**
+     * お問い合わせ画面表示
+     *
+     * @return View
+     */
+    public function show(): View
     {
         return view('contact.form');
     }
 
-    public function submit(ContactRequest $request)
+    /**
+     * お問い合わせ送信処理
+     *
+     * @param ContactRequest $request
+     * @return RedirectResponse
+     */
+    public function submit(ContactRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -39,7 +52,12 @@ class ContactController extends Controller
         }
     }
 
-    public function thanks() 
+    /**
+     * サンクスページ表示
+     *
+     * @return View
+     */
+    public function thanks() : View
     {
         return view('contact.thanks');
     }
