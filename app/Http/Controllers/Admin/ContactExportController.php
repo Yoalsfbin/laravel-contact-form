@@ -65,27 +65,27 @@ class ContactExportController extends Controller
             })->get();
         
 
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="contacts.csv"',
-        ];
+        $filename = 'contacts_export_' . now()->format('Ymd_His') . '.csv';
 
-        $callback = function () use ($contacts) {
+        return response()->streamDownload(function () use ($contacts) {
+            // BOM を先頭に追加（Excelで文字化けしないように）
+            echo "\xEF\xBB\xBF";
+
             $handle = fopen('php://output', 'w');
-            fputcsv($handle, ['名前', 'メール', '件名', 'メッセージ', '送信日時']);
+            fputcsv($handle, ['名前', 'メール', '件名', '内容', '送信日時']);
+
             foreach ($contacts as $contact) {
                 fputcsv($handle, [
                     $contact->name,
                     $contact->email,
                     $contact->subject,
                     $contact->message,
-                    $contact->created_at->format('Y-m-d H:i'),
+                    $contact->created_at->format('Y-m-d H:i:s'),
                 ]);
             }
-            fclose($handle);
-        };
 
-        return response()->stream($callback, 200, $headers);
+            fclose($handle);
+        }, $filename);
     }
 }
 
