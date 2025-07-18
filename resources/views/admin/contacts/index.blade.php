@@ -17,14 +17,14 @@
             class="border border-gray-300 rounded px-3 py-2">
 
         {{-- 並び替え対象カラム --}}
-        <select name="sort_column" class="border border-gray-300 rounded px-3 py-2">
+        <select name="sort_column" class="border border-gray-300 rounded px-3 py-2 pr-10">
             <option value="created_at" {{ ($sort_column ?? '') === 'created_at' ? 'selected' : '' }}>送信日時</option>
             <option value="name" {{ ($sort_column ?? '') === 'name' ? 'selected' : '' }}>名前</option>
             <option value="email" {{ ($sort_column ?? '') === 'email' ? 'selected' : '' }}>メールアドレス</option>
         </select>
 
         {{-- 並び順 --}}
-        <select name="sort_direction" class="border border-gray-300 rounded px-3 py-2">
+        <select name="sort_direction" class="border border-gray-300 rounded px-3 py-2 pr-10">
             <option value="desc" {{ ($sort_direction ?? '') === 'desc' ? 'selected' : '' }}>降順</option>
             <option value="asc" {{ ($sort_direction ?? '') === 'asc' ? 'selected' : '' }}>昇順</option>
         </select>
