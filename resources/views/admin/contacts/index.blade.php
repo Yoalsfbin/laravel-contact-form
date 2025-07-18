@@ -3,6 +3,11 @@
     <div class="max-w-7xl mx-auto p-6 sm:p-8">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">お問い合わせ一覧</h1>
 
+        <a href="{{ route('admin.contacts.export') }}"
+        class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition mb-3">
+            CSV出力
+        </a>
+
         {{-- 検索ボックス --}}
         <form method="GET" action="{{ route('admin.contacts.index') }}" class="flex flex-wrap gap-2 mb-4 items-end">
         {{-- キーワード --}}
@@ -42,7 +47,7 @@
                         <th class="px-6 py-4">名前</th>
                         <th class="px-6 py-4">メールアドレス</th>
                         <th class="px-6 py-4">件名</th>
-                        <th class="px-6 py-4">メッセージ</th>
+                        <th class="px-6 py-4">内容</th>
                         <th class="px-6 py-4">送信日時</th>
                         <th class="px-6 py-4 text-center">操作</th>
                     </tr>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
+use App\Http\Controllers\Admin\ContactExportController;
 use App\Http\Controllers\Admin\MailTemplateController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +33,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/contacts/{id}/reply', [AdminContactController::class, 'sendReply'])->name('contacts.sendReply');
 
     // メールテンプレート取得
-    Route::get('/templates/{template}/{contact}', [MailTemplateController::class, 'show'])->name('admin.templates.show');
+    Route::get('/templates/{template}/{contact}', [MailTemplateController::class, 'show'])->name('templates.show');
+
+    // csv出力
+    Route::get('/contacts/export', [ContactExportController::class, 'show'])->name('contacts.export');
+    Route::post('/contacts/export', [ContactExportController::class, 'export'])->name('contacts.export.post');
 });
 
 require __DIR__.'/auth.php';
