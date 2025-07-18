@@ -19,20 +19,36 @@ class ContactController extends Controller
      */
     public function index(Request $request): View
     {
-        $keyword = $request->input('keyword');
+        $keyword        = $request->input('keyword');
+        $from_date      = $request->input('from_date');
+        $to_date        = $request->input('to_date');
+        $sort_column    = $request->input('sort_column', 'created_at'); // デフォルト: 送信日時
+        $sort_direction = $request->input('sort_direction', 'desc');    // デフォルト: 降順
+
+        $allowedColumns = ['name', 'email', 'subject', 'message', 'created_at'];
 
         $contacts = Contact::query()
             ->when($keyword, function ($query, $keyword) {
-                $query->where('name', 'like', "%{$keyword}%")
+                $query->where(function ($q) use ($keyword) {
+                    $q->where('name', 'like', "%{$keyword}%")
                     ->orWhere('email', 'like', "%{$keyword}%")
                     ->orWhere('subject', 'like', "%{$keyword}%")
                     ->orWhere('message', 'like', "%{$keyword}%");
+                });
             })
-            ->latest()
+            ->when($from_date, fn($query) => $query->whereDate('created_at', '>=', $from_date))
+            ->when($to_date, fn($query) => $query->whereDate('created_at', '<=', $to_date))
+            ->when(in_array($sort_column, $allowedColumns), function ($query) use ($sort_column, $sort_direction) {
+                $query->orderBy($sort_column, $sort_direction);
+            }, function ($query) {
+                $query->orderBy('created_at', 'desc');
+            })
             ->paginate(10)
             ->withQueryString();
 
-        return view('admin.contacts.index', compact('contacts', 'keyword'));
+        return view('admin.contacts.index', compact(
+            'contacts', 'keyword', 'from_date', 'to_date', 'sort_column', 'sort_direction'
+        ));
     }
 
 

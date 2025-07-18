@@ -4,18 +4,43 @@
         <h1 class="text-3xl font-bold text-gray-800 mb-6">お問い合わせ一覧</h1>
 
         {{-- 検索ボックス --}}
-        <form method="GET" action="{{ route('admin.contacts.index') }}" class="mb-4">
-            <input type="text" name="keyword" value="{{ $keyword ?? '' }}" placeholder="キーワードで検索"
-                class="border px-3 py-1 rounded" />
-            <button type="submit" class="bg-indigo-600 text-white px-4 py-1 rounded ml-2">検索</button>
-        </form>
+        <form method="GET" action="{{ route('admin.contacts.index') }}" class="flex flex-wrap gap-2 mb-4 items-end">
+        {{-- キーワード --}}
+        <input type="text" name="keyword" value="{{ $keyword ?? '' }}" placeholder="キーワード検索"
+            class="border border-gray-300 rounded px-3 py-2">
+
+        {{-- 期間フィルタ --}}
+        <input type="date" name="from_date" value="{{ $from_date ?? '' }}"
+            class="border border-gray-300 rounded px-3 py-2">
+        <span class="text-gray-500 text-lg leading-none pb-2.5">〜</span>
+        <input type="date" name="to_date" value="{{ $to_date ?? '' }}"
+            class="border border-gray-300 rounded px-3 py-2">
+
+        {{-- 並び替え対象カラム --}}
+        <select name="sort_column" class="border border-gray-300 rounded px-3 py-2">
+            <option value="created_at" {{ ($sort_column ?? '') === 'created_at' ? 'selected' : '' }}>送信日時</option>
+            <option value="name" {{ ($sort_column ?? '') === 'name' ? 'selected' : '' }}>名前</option>
+            <option value="email" {{ ($sort_column ?? '') === 'email' ? 'selected' : '' }}>メールアドレス</option>
+        </select>
+
+        {{-- 並び順 --}}
+        <select name="sort_direction" class="border border-gray-300 rounded px-3 py-2">
+            <option value="desc" {{ ($sort_direction ?? '') === 'desc' ? 'selected' : '' }}>降順</option>
+            <option value="asc" {{ ($sort_direction ?? '') === 'asc' ? 'selected' : '' }}>昇順</option>
+        </select>
+
+        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
+            検索
+        </button>
+    </form>
+
 
         <div class="overflow-x-auto bg-white rounded-lg shadow">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-100 text-left text-sm font-semibold text-gray-700">
                     <tr>
                         <th class="px-6 py-4">名前</th>
-                        <th class="px-6 py-4">メール</th>
+                        <th class="px-6 py-4">メールアドレス</th>
                         <th class="px-6 py-4">件名</th>
                         <th class="px-6 py-4">メッセージ</th>
                         <th class="px-6 py-4">送信日時</th>
