@@ -22,8 +22,8 @@ class ContactController extends Controller
         $keyword        = $request->input('keyword');
         $from_date      = $request->input('from_date');
         $to_date        = $request->input('to_date');
-        $sort_column    = $request->input('sort_column', 'created_at'); // デフォルト: 送信日時
-        $sort_direction = $request->input('sort_direction', 'desc');    // デフォルト: 降順
+        $sort_column    = $request->input('sort_column', 'created_at');
+        $sort_direction = $request->input('sort_direction', 'desc');
 
         $allowedColumns = ['name', 'email', 'subject', 'message', 'created_at'];
 
@@ -31,23 +31,30 @@ class ContactController extends Controller
             ->when($keyword, function ($query, $keyword) {
                 $query->where(function ($q) use ($keyword) {
                     $q->where('name', 'like', "%{$keyword}%")
-                    ->orWhere('email', 'like', "%{$keyword}%")
-                    ->orWhere('subject', 'like', "%{$keyword}%")
-                    ->orWhere('message', 'like', "%{$keyword}%");
+                        ->orWhere('email', 'like', "%{$keyword}%")
+                        ->orWhere('subject', 'like', "%{$keyword}%")
+                        ->orWhere('message', 'like', "%{$keyword}%");
                 });
             })
             ->when($from_date, fn($query) => $query->whereDate('created_at', '>=', $from_date))
             ->when($to_date, fn($query) => $query->whereDate('created_at', '<=', $to_date))
             ->when(in_array($sort_column, $allowedColumns), function ($query) use ($sort_column, $sort_direction) {
-                $query->orderBy($sort_column, $sort_direction);
+                $query->orderBy($sort_column, $sort_direction)
+                    ->orderBy('name', 'asc');
             }, function ($query) {
-                $query->orderBy('created_at', 'desc');
+                $query->orderBy('created_at', 'desc')
+                    ->orderBy('name', 'asc');
             })
             ->paginate(10)
             ->withQueryString();
 
         return view('admin.contacts.index', compact(
-            'contacts', 'keyword', 'from_date', 'to_date', 'sort_column', 'sort_direction'
+            'contacts',
+            'keyword',
+            'from_date',
+            'to_date',
+            'sort_column',
+            'sort_direction'
         ));
     }
 
@@ -82,10 +89,9 @@ class ContactController extends Controller
         // ここでメール送信処理など
         Mail::raw($request->reply_message, function ($message) use ($contact) {
             $message->to($contact->email)
-                    ->subject('お問い合わせへの返信');
+                ->subject('お問い合わせへの返信');
         });
 
         return redirect()->route('admin.contacts.index')->with('success', '返信を送信しました。');
     }
-    
 }

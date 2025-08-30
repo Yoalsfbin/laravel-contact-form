@@ -13,6 +13,15 @@ class ContactSeeder extends Seeder
      */
     public function run(): void
     {
-        Contact::factory()->count(30)->create();
+        $count = 30;
+
+        foreach (range(1, $count) as $i) {
+            Contact::factory()->create([
+                'name'    => "送付者{$i}",
+                'email'   => "sample{$i}@example.com",
+                'subject' => "これはサンプルのお問い合わせ{$i}の件名です",
+                'message' => "これはサンプルのお問い合わせ{$i}の内容です。",
+            ]);
+        }
     }
 }

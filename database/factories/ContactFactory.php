@@ -17,10 +17,10 @@ class ContactFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->safeEmail(),
-            'subject' => $this->faker->realText(15),
-            'message' => $this->faker->realText(100),
+            'name' => 'お問い合わせ',
+            'email' => 'sample@example.com',
+            'subject' => 'サンプルのお問い合わせ',
+            'message' => 'これはサンプルのお問い合わせです。',
             'created_at' => now(),
             'updated_at' => now(),
         ];
